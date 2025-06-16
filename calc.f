@@ -4,6 +4,6 @@
   EVALUATE ;    \ interpret the string as a number
 
 : calc
-  ." Enter a number" CR
-  getNum . CR
+  ." Enter two numbers" CR
+  getNum getNum + . CR
   bye ;
