@@ -11,17 +11,27 @@
   PAD SWAP ;
 
 \ initialize variables
-0 VALUE num1
-0 VALUE num2
-0 VALUE op
+VARIABLE num1
+VARIABLE num2
+VARIABLE op
+VARIABLE print
 
 \ calculate
 : calc
+  \ get numbers
   ." Enter two numbers" CR
-  getNum TO num1
-  getNum TO num2
-  num1 num2 + . CR
-  ." Enter the operation to perform" CR
-  getOp TO op
-  op TYPE CR
+  getNum num1 !
+  getNum num2 !
+
+  \ get operation
+  CR ." Enter the operation to perform" CR
+  getOp op SWAP MOVE \ parse op as string
+  CR \ newline
+
+  \ calculate
+  op 1                     \ addr len of input (assumes 1-char op)
+  S" +" COMPARE 0= 
+  IF num1 @ num2 @ + print ! 
+  THEN print @ . CR
+
   bye ;
