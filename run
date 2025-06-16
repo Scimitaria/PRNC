@@ -1,0 +1,3 @@
+#!/bin/zsh
+
+gforth calc.f -e calc
