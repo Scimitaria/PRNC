@@ -1,5 +1,4 @@
 \ get number
-\ TODO: use ?DIGIT to verify num?
 : getNum
   PAD 10 ACCEPT  \ get command line input
   PAD SWAP       \ uses length of cli to parse input
@@ -34,6 +33,10 @@ VARIABLE print
   THEN
 ;
 
+\ do the actual calculation
+: docalc ( num1 num2 op -- result)
+;
+
 \ calculate
 : calc
   \ get numbers
@@ -63,7 +66,11 @@ VARIABLE print
           op 1 S" ^" COMPARE 0= IF 
             num1 @ num2 @ power print ! \ power
           ELSE
+            op 1 S" %" COMPARE 0= IF 
+              num1 @ num2 @ mod print ! \ modulo
+            ELSE
             ." error" CR
+            THEN
           THEN
         THEN
       THEN
