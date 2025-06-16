@@ -29,9 +29,25 @@ VARIABLE print
   CR \ newline
 
   \ calculate
-  op 1                     \ addr len of input (assumes 1-char op)
-  S" +" COMPARE 0= 
-  IF num1 @ num2 @ + print ! 
-  THEN print @ . CR
+  \ op 1 is addr len of input (assumes 1-char op)
+  op 1 S" +" COMPARE 0= IF 
+    num1 @ num2 @ + print ! \ add
+  ELSE
+    op 1 S" -" COMPARE 0= IF 
+      num1 @ num2 @ - print ! \ subtract
+    ELSE
+      op 1 S" *" COMPARE 0= IF 
+        num1 @ num2 @ * print ! \ multiply
+      ELSE
+        op 1 S" /" COMPARE 0= IF 
+        num1 @ num2 @ / print ! \ divide
+          ELSE
+            ." error" CR
+        THEN
+      THEN
+    THEN 
+  THEN 
+  
+  print @ . CR
 
   bye ;
