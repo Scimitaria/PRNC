@@ -34,26 +34,20 @@ VARIABLE print
 ;
 
 \ do the actual calculation
-: docalc ( num1 num2 op -- result)
-;
+: docalc ( num1 num2 addr len -- result )
+  2DUP S" +" COMPARE 0= IF 2DROP + EXIT THEN
+  2DUP S" -" COMPARE 0= IF 2DROP - EXIT THEN
+  2DUP S" *" COMPARE 0= IF 2DROP * EXIT THEN
+  2DUP S" /" COMPARE 0= IF 2DROP / EXIT THEN
+  2DUP S" ^" COMPARE 0= IF 2DROP power EXIT THEN
+  2DUP S" %" COMPARE 0= IF 2DROP mod EXIT THEN
+  2DROP DROP DROP ." Unknown op" CR EXIT
 
-\ calculate
-: calc
-  \ get numbers
-  ." Enter two numbers" CR
-  getNum num1 !
-  getNum num2 !
-
-  \ get operation
-  CR ." Enter the operation to perform" CR
-  getOp op SWAP MOVE \ parse op as string
-  CR \ newline
-
-  \ calculate
-  \ op 1 is addr len of input (assumes 1-char op)
-  op 1 S" +" COMPARE 0= IF 
+   \ old version
+   \ don't have to comment this cause it's unreachable lol
+   op 1 S" +" COMPARE 0= IF 
     num1 @ num2 @ + print ! \ add
-  ELSE
+   ELSE
     op 1 S" -" COMPARE 0= IF 
       num1 @ num2 @ - print ! \ subtract
     ELSE
@@ -69,14 +63,27 @@ VARIABLE print
             op 1 S" %" COMPARE 0= IF 
               num1 @ num2 @ mod print ! \ modulo
             ELSE
-            ." error" CR
+              ." error" CR
             THEN
           THEN
         THEN
       THEN
     THEN 
-  THEN 
-  
-  print @ . CR
+  THEN
+;
+
+\ calculate
+: calc
+  \ get numbers
+  ." Enter two numbers" CR
+  getNum num1 !
+  getNum num2 !
+
+  \ get operation
+  CR ." Enter the operation to perform" CR
+  getOp op SWAP MOVE
+
+  \ op 1 is addr len of input (assumes 1-char op)
+  CR num1 @ num2 @ op 1 docalc . CR
 
   BYE ;
